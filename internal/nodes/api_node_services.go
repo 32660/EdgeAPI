@@ -3,13 +3,14 @@
 package nodes
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/TeaOSLab/EdgeAPI/internal/rpc/services"
 	"github.com/TeaOSLab/EdgeAPI/internal/rpc/services/clients"
 	"github.com/TeaOSLab/EdgeAPI/internal/rpc/services/users"
 	"github.com/TeaOSLab/EdgeCommon/pkg/rpc/pb"
 	"google.golang.org/grpc"
-	"reflect"
-	"strings"
 )
 
 // 注册服务
@@ -527,6 +528,12 @@ func (this *APINode) registerServices(server *grpc.Server) {
 	{
 		var instance = this.serviceInstance(&services.UpdatingServerListService{}).(*services.UpdatingServerListService)
 		pb.RegisterUpdatingServerListServiceServer(server, instance)
+		this.rest(instance)
+	}
+
+	{
+		var instance = this.serviceInstance(&services.HelloWorldService{}).(*services.HelloWorldService)
+		pb.RegisterHelloWorldServiceServer(server, instance)
 		this.rest(instance)
 	}
 
